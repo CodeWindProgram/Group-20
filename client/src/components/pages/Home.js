@@ -19,7 +19,6 @@ class Home extends Component {
     render() {
         return < div className="Home">
             <center>
-                <input type="text" placeholder="Search"></input>
                 <i className="search icon"></i>
                 <Apii />
 

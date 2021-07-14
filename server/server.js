@@ -68,14 +68,42 @@ app.post('/api/new-country', function (req, res) {
     })
 });
 
-app.get('/api/question-answers', function (req, res) {
+app.post('/api/new-answer', function (req, res) {
+    var ans_discription = req.body.answer;
+    var que_id = req.body.que_id
+    var today = new Date();
+    var date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
 
     pool.connect((err, db, done) => {
         if (err) {
             return res.status(400).send(err);
         }
         else {
-            db.query('SELECT question.que_discription ,question.que_tag ,answers.ans_discription FROM question JOIN answers ON question.que_id = answers.que_id;', (err, table) => {
+            db.query('INSERT INTO question (ans_discription,que_id,que_date,que_time) VALUES($1,$2,$3,$4)', [ans_discription, que_id, date, time], (err, table) => {
+                if (err) {
+                    return res.status(400).send(err);
+                }
+                else {
+                    console.log('Data inserted');
+                    res.status(201).send({ message: 'Data inserted' });
+
+                }
+            });
+        }
+
+
+    })
+});
+
+app.get('/api/question-answers', function (req, res) {
+    console.log("hellobhjsbfbkjbfkjsanknsfanfa");
+    pool.connect((err, db, done) => {
+        if (err) {
+            return res.status(400).send(err);
+        }
+        else {
+            db.query('SELECT question.que_id,question.que_discription ,question.que_tag ,answers.ans_discription FROM question JOIN answers ON question.que_id = answers.que_id;', (err, table) => {
                 if (err) {
                     return res.status(400).send(err);
                 }
@@ -91,7 +119,6 @@ app.get('/api/question-answers', function (req, res) {
 
     })
 });
-
 app.get('/api/not-answered', function (req, res) {
 
     pool.connect((err, db, done) => {
@@ -99,7 +126,7 @@ app.get('/api/not-answered', function (req, res) {
             return res.status(400).send(err);
         }
         else {
-            db.query('SELECT que_discription,que_tag FROM question WHERE que_id NOT IN (SELECT que_id FROM answers);', (err, table) => {
+            db.query('SELECT que_id,que_discription,que_tag FROM question WHERE que_id NOT IN (SELECT que_id FROM answers);', (err, table) => {
                 if (err) {
                     return res.status(400).send(err);
                 }

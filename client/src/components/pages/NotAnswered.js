@@ -32,7 +32,7 @@ export default class NotAnswered extends Component {
             <ul>
                 {
                     this.state.que.map(function (que, index) {
-                        return <center><div className="form-wrapper2"><form> <h4>{que.que_discription}</h4>
+                        return <center><div className="form-wrapper2"><form><h4>{que.que_id})</h4> <h4>{que.que_discription}</h4>
                             <p><break /><div className="tag">{que.que_tag}</div></p>
                         </form>
                             <input type="text" placeholder="Your answer" ></input>
