@@ -1,3 +1,4 @@
+//for home page
 import '../../App.css';
 import React, { Component } from 'react'
 
